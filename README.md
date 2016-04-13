@@ -101,4 +101,3 @@ experience:
   remote to every project and pushes it to local.
 
 * Understand non-commaneline-weenie workflows and support them.
-
