@@ -6,8 +6,12 @@ run: build docker-compose.override.yml
 	docker-compose up -d
 #	sleep 5 && (cd gitolite-admin; git push -f)
 
-build:
+build: jenkins/ssh/id_rsa
 	docker-compose build
+
+jenkins/ssh/id_rsa:
+	mkdir -p `dirname $@`
+	ssh-keygen -P ''  -f $@ -C "Jenkins"
 
 docker-compose.override.yml: docker-compose.override.template
 	cp $< $@
