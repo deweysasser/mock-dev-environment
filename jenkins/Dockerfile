@@ -24,6 +24,7 @@ RUN addgroup --gid 999 docker; addgroup jenkins docker
 
 RUN apt-get update
 RUN apt-get -y install python-pip make git-core
+RUN pip install virtualenv
 
 
 ######################################################################
