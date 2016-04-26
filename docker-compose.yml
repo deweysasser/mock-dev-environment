@@ -5,11 +5,15 @@ jenkins:
      - "8081:8080"
    volumes:
      - jenkins:/var/jenkins_home
-     - /var/run/docker.sock:/var/run/docker.sock
+   volumes_from:
+     - docker
    links:
      - git
+     - docker
+     - registry
    environment:
      JAVA_OPTS: -Duser.timezone=America/New_York
+     DOCKER_HOST: docker:2375
 
 git:
   restart: always
@@ -20,14 +24,23 @@ git:
     - git-repos:/home/git/repositories
     - git-ssh:/etc/ssh
 
+docker:
+  image: docker:dind
+  privileged: true
+  volumes:
+    - dind:/var/lib/docker
+  links:
+    - registry
+  command: --insecure-registry registry:5000
+
 registry:
   restart: always
   image: registry:2
   ports:
-   - "80:5000"
    - "5000:5000"
   environment:
     REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
   volumes:
     - registry-data:/data
+    
 
